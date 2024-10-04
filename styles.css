@@ -1,0 +1,157 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.dark-mode {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+
+.dark-mode .container {
+    background-color: #2a2a2a;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1 {
+    margin: 0;
+}
+
+button {
+    background-color: #ff9900;
+    color: #ffffff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #f88f2c;
+    transform: scale(1.05);
+}
+
+.dark-mode button {
+    background-color: #444;
+    color: #ffffff;
+}
+
+.dark-mode button:hover {
+    background-color: #333;
+}
+
+/* 3-dot Settings Button */
+#settings-btn {
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: inherit;
+}
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+.dark-mode .modal-content {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+}
+
+button#confirm-delete, button#cancel-delete {
+    margin: 10px;
+}
+
+/* Settings Slider */
+.slider {
+    position: fixed;
+    right: -100%;
+    top: 0;
+    height: 100%;
+    width: 300px;
+    background-color: #fff;
+    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease;
+    z-index: 1000;
+}
+
+.dark-mode .slider {
+    background-color: #2a2a2a;
+}
+
+.slider-content {
+    padding: 20px;
+}
+
+button#close-slider {
+    background-color: red;
+    border: none;
+    padding: 5px 10px;
+    color: white;
+    cursor: pointer;
+}
+
+/* Language Dropdown */
+.language-dropdown {
+    margin: 15px 0;
+}
+
+.language-dropdown select {
+    padding: 5px;
+    font-size: 16px;
+}
+
+/* Slider options buttons */
+.slider-options button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.slider-active {
+    right: 0;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    button {
+        width: 100%;
+    }
+}
