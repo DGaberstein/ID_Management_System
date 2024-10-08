@@ -14,6 +14,7 @@ const radioButtons = document.querySelectorAll('input[name="icon-type"]');
 
 let darkMode = false;
 let idToDelete = null;
+let ids = [];  // This array will store added IDs
 
 // Toggle Settings Slider
 settingsBtn.addEventListener('click', () => {
@@ -35,7 +36,9 @@ idsList.addEventListener('click', (e) => {
 // Confirm delete
 confirmDeleteButton.addEventListener('click', () => {
     if (idToDelete) {
-        idsList.removeChild(idToDelete);
+        const idText = idToDelete.textContent.trim().split(' ')[1];
+        ids = ids.filter(id => id !== idText);  // Remove ID from the array
+        idsList.removeChild(idToDelete);  // Remove ID from the list
         idToDelete = null;
         deleteModal.style.display = 'none';
     }
@@ -68,8 +71,49 @@ function applyDarkModeToModal() {
 radioButtons.forEach((radio) => {
     radio.addEventListener('change', () => {
         newIdInput.disabled = false;  // Enable the input field
-        addIdBtn.disabled = false;    // Enable the add button
     });
+});
+
+// Enable/Disable the Add button based on input value
+newIdInput.addEventListener('input', () => {
+    if (newIdInput.value.trim() !== '') {
+        addIdBtn.disabled = false;
+    } else {
+        addIdBtn.disabled = true;
+    }
+});
+
+// Add the ID and corresponding icon to the list when clicking the add button
+addIdBtn.addEventListener('click', () => {
+    const newId = newIdInput.value.trim();
+
+    // Check for duplicate ID
+    if (ids.includes(newId)) {
+        alert('This ID already exists. Please use a different ID.');
+        return;  // Stop if duplicate ID is found
+    }
+
+    if (newId !== '') {
+        // Get the selected icon type
+        let selectedIcon;
+        radioButtons.forEach((radio) => {
+            if (radio.checked) {
+                selectedIcon = radio.value === 'trailer' ? '<i class="fas fa-trailer"></i>' : '<i class="fas fa-exchange-alt"></i>';
+            }
+        });
+
+        // Create list item with icon and ID
+        const li = document.createElement('li');
+        li.innerHTML = `${selectedIcon} ${newId} <button class="delete-btn">Delete</button>`;
+        idsList.appendChild(li);
+
+        // Add ID to the array
+        ids.push(newId);
+
+        // Clear input field and disable add button
+        newIdInput.value = '';
+        addIdBtn.disabled = true;
+    }
 });
 
 // Language selection handling
