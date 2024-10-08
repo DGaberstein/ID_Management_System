@@ -25,6 +25,13 @@ closeSliderBtn.addEventListener('click', () => {
     settingsSlider.classList.remove('slider-active');
 });
 
+// Close settings slider when clicking outside of it
+document.addEventListener('click', (e) => {
+    if (!settingsSlider.contains(e.target) && !settingsBtn.contains(e.target)) {
+        settingsSlider.classList.remove('slider-active');
+    }
+});
+
 // Enable ID input when a radio button is selected
 radioButtons.forEach((radio) => {
     radio.addEventListener('change', () => {
@@ -116,3 +123,34 @@ function applyDarkModeToModal() {
         modalContent.classList.remove('dark-mode');
     }
 }
+
+// Language change functionality
+languageSelect.addEventListener('change', (e) => {
+    const selectedLanguage = e.target.value;
+    switch (selectedLanguage) {
+        case 'en':
+            document.getElementById('main-title').innerText = 'ID Management System';
+            document.getElementById('settings-title').innerText = 'Settings';
+            document.getElementById('toggle-dark-mode').innerText = 'Toggle Dark Mode';
+            document.getElementById('language-label').innerText = 'Language:';
+            document.getElementById('trailer-label').innerText = 'Trailer';
+            document.getElementById('swapbody-label').innerText = 'Swapbody';
+            document.getElementById('current-ids-title').innerText = 'Current IDs';
+            document.getElementById('delete-confirmation-text').innerText = 'Are you sure you want to delete this ID?';
+            document.getElementById('confirm-delete').innerText = 'Confirm';
+            document.getElementById('cancel-delete').innerText = 'Cancel';
+            break;
+        case 'de':
+            document.getElementById('main-title').innerText = 'ID-Verwaltungssystem';
+            document.getElementById('settings-title').innerText = 'Einstellungen';
+            document.getElementById('toggle-dark-mode').innerText = 'Dunkelmodus umschalten';
+            document.getElementById('language-label').innerText = 'Sprache:';
+            document.getElementById('trailer-label').innerText = 'Anhänger';
+            document.getElementById('swapbody-label').innerText = 'Wechselbrücke';
+            document.getElementById('current-ids-title').innerText = 'Aktuelle IDs';
+            document.getElementById('delete-confirmation-text').innerText = 'Möchten Sie diese ID wirklich löschen?';
+            document.getElementById('confirm-delete').innerText = 'Bestätigen';
+            document.getElementById('cancel-delete').innerText = 'Abbrechen';
+            break;
+    }
+});
