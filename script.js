@@ -14,7 +14,7 @@ const radioButtons = document.querySelectorAll('input[name="icon-type"]');
 
 let darkMode = false;
 let idToDelete = null;
-let ids = [];  // This array will store added IDs
+let ids = [];
 
 // Toggle Settings Slider
 settingsBtn.addEventListener('click', () => {
@@ -25,20 +25,65 @@ closeSliderBtn.addEventListener('click', () => {
     settingsSlider.classList.remove('slider-active');
 });
 
+// Enable ID input when a radio button is selected
+radioButtons.forEach((radio) => {
+    radio.addEventListener('change', () => {
+        newIdInput.disabled = false;  // Enable the input field
+        newIdInput.dataset.iconType = radio.value; // Store the selected icon type
+    });
+});
+
+// Enable/Disable the Add button based on input value
+newIdInput.addEventListener('input', () => {
+    if (newIdInput.value.trim() !== '') {
+        addIdBtn.disabled = false;
+    } else {
+        addIdBtn.disabled = true;
+    }
+});
+
+// Add the ID to the list when clicking the add button
+addIdBtn.addEventListener('click', () => {
+    const newId = newIdInput.value.trim();
+    const iconType = newIdInput.dataset.iconType || 'trailer';
+    const timestamp = new Date().toLocaleString();
+
+    if (newId !== '') {
+        if (isDuplicate(newId, iconType)) {
+            alert('This ID already exists for the selected vehicle type.');
+            return;
+        }
+
+        const li = document.createElement('li');
+        li.innerHTML = `<span class="id-text">${newId}</span> - <span class="icon-type">${iconType}</span> 
+                        <span class="timestamp">(${timestamp})</span> 
+                        <button class="delete-btn">Delete</button>`;
+        idsList.appendChild(li);
+
+        ids.push({ id: newId, iconType: iconType, timestamp: timestamp });
+
+        newIdInput.value = '';  // Clear input field
+        addIdBtn.disabled = true;  // Disable button after adding
+    }
+});
+
 // Delete an ID with confirmation
 idsList.addEventListener('click', (e) => {
     if (e.target.classList.contains('delete-btn')) {
-        idToDelete = e.target.parentElement;
+        const li = e.target.parentElement;
+        const idText = li.querySelector('.id-text').innerText;
+        const iconType = li.querySelector('.icon-type').innerText;
+
+        idToDelete = ids.findIndex(item => item.id === idText && item.iconType === iconType);
         deleteModal.style.display = 'flex';
     }
 });
 
 // Confirm delete
 confirmDeleteButton.addEventListener('click', () => {
-    if (idToDelete) {
-        const idText = idToDelete.textContent.trim().split(' ')[1];
-        ids = ids.filter(id => id !== idText);  // Remove ID from the array
-        idsList.removeChild(idToDelete);  // Remove ID from the list
+    if (idToDelete !== null) {
+        ids.splice(idToDelete, 1); // Remove from array
+        idsList.removeChild(idsList.children[idToDelete]); // Remove from UI
         idToDelete = null;
         deleteModal.style.display = 'none';
     }
@@ -49,6 +94,11 @@ cancelDeleteButton.addEventListener('click', () => {
     idToDelete = null;
     deleteModal.style.display = 'none';
 });
+
+// Check for duplicate IDs for the same icon type
+function isDuplicate(id, iconType) {
+    return ids.some(item => item.id === id && item.iconType === iconType);
+}
 
 // Toggle dark mode
 darkModeToggle.addEventListener('click', () => {
@@ -66,83 +116,3 @@ function applyDarkModeToModal() {
         modalContent.classList.remove('dark-mode');
     }
 }
-
-// Enable ID input when a radio button is selected
-radioButtons.forEach((radio) => {
-    radio.addEventListener('change', () => {
-        newIdInput.disabled = false;  // Enable the input field
-    });
-});
-
-// Enable/Disable the Add button based on input value
-newIdInput.addEventListener('input', () => {
-    if (newIdInput.value.trim() !== '') {
-        addIdBtn.disabled = false;
-    } else {
-        addIdBtn.disabled = true;
-    }
-});
-
-// Add the ID and corresponding icon to the list when clicking the add button
-addIdBtn.addEventListener('click', () => {
-    const newId = newIdInput.value.trim();
-
-    // Check for duplicate ID
-    if (ids.includes(newId)) {
-        alert('This ID already exists. Please use a different ID.');
-        return;  // Stop if duplicate ID is found
-    }
-
-    if (newId !== '') {
-        // Get the selected icon type
-        let selectedIcon;
-        radioButtons.forEach((radio) => {
-            if (radio.checked) {
-                selectedIcon = radio.value === 'trailer' ? '<i class="fas fa-trailer"></i>' : '<i class="fas fa-exchange-alt"></i>';
-            }
-        });
-
-        // Create list item with icon and ID
-        const li = document.createElement('li');
-        li.innerHTML = `${selectedIcon} ${newId} <button class="delete-btn">Delete</button>`;
-        idsList.appendChild(li);
-
-        // Add ID to the array
-        ids.push(newId);
-
-        // Clear input field and disable add button
-        newIdInput.value = '';
-        addIdBtn.disabled = true;
-    }
-});
-
-// Language selection handling
-languageSelect.addEventListener('change', () => {
-    const selectedLanguage = languageSelect.value;
-    switch (selectedLanguage) {
-        case 'en':
-            document.getElementById('main-title').innerText = 'ID Management System';
-            document.getElementById('settings-title').innerText = 'Settings';
-            document.getElementById('toggle-dark-mode').innerText = 'Toggle Dark Mode';
-            document.getElementById('language-label').innerText = 'Language:';
-            document.getElementById('trailer-label').innerText = 'Trailer';
-            document.getElementById('swapbody-label').innerText = 'Swapbody';
-            document.getElementById('current-ids-title').innerText = 'Current IDs';
-            document.getElementById('delete-confirmation-text').innerText = 'Are you sure you want to delete this ID?';
-            document.getElementById('confirm-delete').innerText = 'Confirm';
-            document.getElementById('cancel-delete').innerText = 'Cancel';
-            break;
-        case 'de':
-            document.getElementById('main-title').innerText = 'ID-Verwaltungssystem';
-            document.getElementById('settings-title').innerText = 'Einstellungen';
-            document.getElementById('toggle-dark-mode').innerText = 'Dunkelmodus umschalten';
-            document.getElementById('language-label').innerText = 'Sprache:';
-            document.getElementById('trailer-label').innerText = 'Anhänger';
-            document.getElementById('swapbody-label').innerText = 'Wechselbrücke';
-            document.getElementById('current-ids-title').innerText = 'Aktuelle IDs';
-            document.getElementById('delete-confirmation-text').innerText = 'Möchten Sie diese ID wirklich löschen?';
-            document.getElementById('confirm-delete').innerText = 'Bestätigen';
-            document.getElementById('cancel-delete').innerText = 'Abbrechen';
-            break;
-    }
-});

@@ -5,6 +5,10 @@ body {
     background-color: #f5f5f5;
     color: #333;
     transition: background-color 0.3s, color 0.3s;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none; /* Disable text selection for better touch experience */
 }
 
 .dark-mode {
@@ -13,8 +17,8 @@ body {
 }
 
 .container {
-    max-width: 900px;
-    margin: 50px auto;
+    max-width: 600px;
+    margin: 20px auto;
     padding: 20px;
     background-color: #fff;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -31,10 +35,6 @@ header {
     align-items: center;
 }
 
-h1 {
-    margin: 0;
-}
-
 button {
     background-color: #ff9900;
     color: #ffffff;
@@ -42,12 +42,11 @@ button {
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: background-color 0.3s;
 }
 
 button:hover {
     background-color: #f88f2c;
-    transform: scale(1.05);
 }
 
 .dark-mode button {
@@ -59,16 +58,7 @@ button:hover {
     background-color: #333;
 }
 
-/* 3-dot Settings Button */
-#settings-btn {
-    background-color: transparent;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: inherit;
-}
-
-/* Modal Styling */
+/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -85,73 +75,95 @@ button:hover {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
-    text-align: center;
     width: 90%;
     max-width: 400px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .dark-mode .modal-content {
     background-color: #2a2a2a;
-    color: #e0e0e0;
 }
 
-button#confirm-delete, button#cancel-delete {
-    margin: 10px;
+/* Icon selection */
+.icon-selection {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
 }
 
-/* Settings Slider */
-.slider {
-    position: fixed;
-    right: -100%;
-    top: 0;
-    height: 100%;
-    width: 300px;
-    background-color: #fff;
-    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.1);
-    transition: right 0.3s ease;
-    z-index: 1000;
+.icon-selection label {
+    display: flex;
+    align-items: center;
 }
 
-.dark-mode .slider {
-    background-color: #2a2a2a;
+.icon-selection input[type="radio"] {
+    margin-right: 5px;
 }
 
-.slider-content {
-    padding: 20px;
+/* ID list */
+#id-list {
+    margin-top: 20px;
 }
 
-button#close-slider {
-    background-color: red;
-    border: none;
-    padding: 5px 10px;
-    color: white;
-    cursor: pointer;
+#ids li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
 }
 
-/* Language Dropdown */
-.language-dropdown {
-    margin: 15px 0;
+#ids li .timestamp {
+    font-size: 0.8em;
+    color: #777;
 }
 
-.language-dropdown select {
-    padding: 5px;
-    font-size: 16px;
-}
-
-/* Slider options buttons */
-.slider-options button {
-    display: block;
-    width: 100%;
-    margin: 10px 0;
-}
-
-.slider-active {
-    right: 0;
-}
-
-/* Media Queries */
-@media (max-width: 768px) {
-    button {
-        width: 100%;
+/* Mobile adjustments for Zebra TC52/TC57 */
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
     }
+
+    header h1 {
+        font-size: 1.4em;
+    }
+
+    button {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+
+    .icon-selection label {
+        font-size: 0.9em;
+    }
+
+    .icon-container input {
+        width: 100%;
+        padding: 10px;
+        font-size: 1em;
+    }
+
+    .icon-container button {
+        padding: 10px;
+        font-size: 1.2em;
+    }
+
+    .modal-content {
+        padding: 15px;
+    }
+
+    #ids li {
+        padding: 8px;
+    }
+}
+
+/* Touch optimization for Zebra TC52/TC57 */
+input,
+button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+button:active {
+    background-color: #cc7a00;
 }
