@@ -1,3 +1,6 @@
+document.addEventListener('deviceready', onDeviceReady, false);
+
+function onDeviceReady() {
 // Variables for elements
 const settingsBtn = document.getElementById('settings-btn');
 const settingsSlider = document.getElementById('settings-slider');
@@ -154,3 +157,4 @@ languageSelect.addEventListener('change', (e) => {
             break;
     }
 });
+}
